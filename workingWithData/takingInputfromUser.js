@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
@@ -40,5 +40,11 @@ const CardList = props => {
     </div>
   );
 };
+
+class Form extends Component {
+  render() {
+    return <div />;
+  }
+}
 
 ReactDOM.render(<CardList cards={data} />, document.getElementById("root"));
