@@ -33,17 +33,22 @@ const CardList = props => {
   // by using the spread operator, we are passing all of the data in the object to the component
   return (
     <div>
+      <Form />
       {props.cards.map(x => (
         <Card {...x} />
       ))}
-      ;
     </div>
   );
 };
 
 class Form extends Component {
   render() {
-    return <div />;
+    return (
+      <form>
+        <input type="text" placeholder="Github username" />
+        <button type="submit">Add card</button>
+      </form>
+    );
   }
 }
 
