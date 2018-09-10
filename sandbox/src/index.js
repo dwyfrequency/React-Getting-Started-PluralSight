@@ -35,7 +35,9 @@ class Form extends Component {
   handleSubmit = event => {
     event.preventDefault();
     console.log("Event: Form Submit", this.state.userName);
-    console.log(event);
+    fetch(`https://api.github.com/users/${this.state.userName}`)
+      .then(response => response.json())
+      .then(data => console.log(data));
   };
 
   render() {
@@ -49,6 +51,7 @@ class Form extends Component {
         {/*adding a value attribute and a state entry to create a controlled element. We now define an onChange func to customize its controlled behavior*/}
         <input
           type="text"
+          // adding value tag creates a controlled element
           value={this.state.userName}
           onChange={event => this.setState({ userName: event.target.value })}
           placeholder="Github username"
