@@ -21,7 +21,7 @@ const CardList = props => {
   return (
     <div>
       {props.cards.map(x => (
-        <Card key={`${x.name}:${x.company}`} {...x} />
+        <Card key={x.id} {...x} />
       ))}
     </div>
   );
