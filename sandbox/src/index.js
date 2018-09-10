@@ -37,7 +37,13 @@ class Form extends Component {
     console.log("Event: Form Submit", this.state.userName);
     fetch(`https://api.github.com/users/${this.state.userName}`)
       .then(response => response.json())
-      .then(data => console.log(data));
+      .then(data => {
+        // calls the addNeCard method
+        this.props.onSubmit(data);
+        // reset form
+        this.setState({ userName: "" });
+        return;
+      });
   };
 
   render() {
@@ -65,24 +71,20 @@ class Form extends Component {
 
 class App extends Component {
   state = {
-    cards: [
-      {
-        name: "Johnny Tsunami",
-        avatar_url: "https://avatars3.githubusercontent.com/u/8900894?v=4",
-        company: "Good Burger"
-      },
-      {
-        name: "Jannie Tsunami",
-        avatar_url: "https://avatars3.githubusercontent.com/u/8900894?v=4",
-        company: "Mondo Burger"
-      }
-    ]
+    cards: []
+  };
+
+  addNewCard = cardInfo => {
+    console.log("addNeCard func: ", cardInfo);
+    this.setState(prevState => ({
+      cards: prevState.cards.concat(cardInfo)
+    }));
   };
 
   render() {
     return (
       <div>
-        <Form />
+        <Form onSubmit={this.addNewCard} />
         <CardList cards={this.state.cards} />
       </div>
     );
