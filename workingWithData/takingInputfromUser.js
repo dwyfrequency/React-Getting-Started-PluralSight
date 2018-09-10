@@ -28,16 +28,32 @@ const CardList = props => {
 };
 
 class Form extends Component {
+  state = {
+    userName: ""
+  };
+
   handleSubmit = event => {
     event.preventDefault();
-    console.log("Event: Form Submit");
+    console.log("Event: Form Submit", this.state.userName);
+    console.log(event);
   };
 
   render() {
-    // we want to read the value in the form everytime we submit
+    // we want to read the value in the form everytime we submit. by using onSubmit, it will honor the required tag on the input
     return (
-      <form onSubmit={() => console.log()}>
-        <input type="text" placeholder="Github username" required />
+      <form onSubmit={this.handleSubmit}>
+        {/* we want to read the input passed in, so we give it a func executed when the element is mounted in the dom
+        we create the variable and access in our handleSubmit func.
+        put the ref in the input tag
+        ref={input => this.userNameInput = input}*/}
+        {/*adding a value attribute and a state entry to create a controlled element. We now define an onChange func to customize its controlled behavior*/}
+        <input
+          type="text"
+          value={this.state.userName}
+          onChange={event => this.setState({ userName: event.target.value })}
+          placeholder="Github username"
+          required
+        />
         <button type="submit">Add card</button>
       </form>
     );
