@@ -2,92 +2,19 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
-const Card = props => {
-  return (
-    <div>
-      <img width="75" src={props.avatar_url} alt="" />
-      <div className="info">
-        <div style={{ fontSize: "1.25em", fontWeight: "bold" }}>
-          {props.name}
-        </div>
-        <div>{props.company}</div>
-      </div>
-    </div>
-  );
-};
-
-const CardList = props => {
-  // by using the spread operator, we are passing all of the data in the object to the component
-  return (
-    <div>
-      {props.cards.map(x => (
-        <Card key={x.id} {...x} />
-      ))}
-    </div>
-  );
-};
-
-class Form extends Component {
-  state = {
-    userName: ""
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    console.log("Event: Form Submit", this.state.userName);
-    fetch(`https://api.github.com/users/${this.state.userName}`)
-      .then(response => response.json())
-      .then(data => {
-        // calls the addNeCard method
-        this.props.onSubmit(data);
-        // reset form
-        this.setState({ userName: "" });
-        return;
-      });
-  };
-
+class Game extends Component {
   render() {
-    // we want to read the value in the form everytime we submit. by using onSubmit, it will honor the required tag on the input
-    return (
-      <form onSubmit={this.handleSubmit}>
-        {/* we want to read the input passed in, so we give it a func executed when the element is mounted in the dom
-        we create the variable and access in our handleSubmit func.
-        put the ref in the input tag
-        ref={input => this.userNameInput = input}*/}
-        {/*adding a value attribute and a state entry to create a controlled element. We now define an onChange func to customize its controlled behavior*/}
-        <input
-          type="text"
-          // adding value tag creates a controlled element
-          value={this.state.userName}
-          onChange={event => this.setState({ userName: event.target.value })}
-          placeholder="Github username"
-          required
-        />
-        <button type="submit">Add card</button>
-      </form>
-    );
+    <div>
+      <h3>Play Nine</h3>
+    </div>;
   }
 }
 
 class App extends Component {
-  state = {
-    cards: []
-  };
-
-  addNewCard = cardInfo => {
-    console.log("addNeCard func: ", cardInfo);
-    this.setState(prevState => ({
-      cards: prevState.cards.concat(cardInfo)
-    }));
-  };
-
   render() {
-    return (
-      <div>
-        <Form onSubmit={this.addNewCard} />
-        <CardList cards={this.state.cards} />
-      </div>
-    );
+    <div>
+      <Game />
+    </div>;
   }
 }
 
