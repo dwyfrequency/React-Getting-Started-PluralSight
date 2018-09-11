@@ -1,20 +1,57 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+// need this import for bootstrap
+import "bootstrap/dist/css/bootstrap.min.css";
+// to install just npm install bootstrap
+import "font-awesome/css/font-awesome.min.css";
+
+const Stars = props => {
+  return (
+    <div className="col-5">
+      <i className="fa fa-star" />
+      <i className="fa fa-star" />
+      <i className="fa fa-star" />
+      <i className="fa fa-star" />
+    </div>
+  );
+};
+
+const Button = props => {
+  return (
+    <div className="col-2">
+      <button className="btn btn-primary">=</button>
+    </div>
+  );
+};
+
+const Answer = props => {
+  return <div className="col-5">...</div>;
+};
 
 class Game extends Component {
   render() {
-    <div>
-      <h3>Play Nine</h3>
-    </div>;
+    return (
+      <div className="container">
+        <hr />
+        <h3>Play Nine</h3>
+        <div className="row">
+          <Stars />
+          <Button />
+          <Answer />
+        </div>
+      </div>
+    );
   }
 }
 
 class App extends Component {
   render() {
-    <div>
-      <Game />
-    </div>;
+    return (
+      <div>
+        <Game />
+      </div>
+    );
   }
 }
 
