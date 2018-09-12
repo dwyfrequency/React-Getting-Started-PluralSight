@@ -26,16 +26,26 @@ const Button = props => {
 };
 
 const Answer = props => {
-  return <div className="col-5">...</div>;
+  return (
+    <div className="col-5">
+      {/* hard coded values for now */}
+      <span>4</span>
+      <span>5</span>
+    </div>
+  );
 };
 
 const Numbers = props => {
+  const numbers = Array.from({ length: 10 }, (val, idx) => (
+    <span key={idx}>{idx + 1}</span>
+  ));
   return (
     <div className="card text-center">
       <div>
-        <span>1</span>
+        {numbers}
+        {/* <span>1</span>
         <span className="selected">2</span>
-        <span className="used">3</span>
+        <span className="used">3</span> */}
       </div>
     </div>
   );
