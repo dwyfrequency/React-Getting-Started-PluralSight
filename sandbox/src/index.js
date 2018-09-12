@@ -36,9 +36,8 @@ const Answer = props => {
 };
 
 const Numbers = props => {
-  const numbers = Array.from({ length: 10 }, (val, idx) => (
-    <span key={idx}>{idx + 1}</span>
-  ));
+  console.log(Numbers.list);
+  const numbers = Numbers.list.map(val => <span key={val}>{val}</span>);
   return (
     <div className="card text-center">
       <div>
@@ -50,6 +49,8 @@ const Numbers = props => {
     </div>
   );
 };
+// Every function is an object and we can store data on that object to be used by all instances
+Numbers.list = Array.from({ length: 10 }, (val, idx) => idx + 1);
 
 class Game extends Component {
   render() {
