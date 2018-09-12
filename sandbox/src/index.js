@@ -7,14 +7,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 
 const Stars = props => {
-  return (
-    <div className="col-5">
-      <i className="fa fa-star" />
-      <i className="fa fa-star" />
-      <i className="fa fa-star" />
-      <i className="fa fa-star" />
-    </div>
-  );
+  // add one so it can actually be between 1 and 9
+  const numberOfStars = 1 + Math.floor(Math.random() * 9);
+  // first arg gives us an undefined array of the len passed in, second populates the array locations based on func output
+  const stars = Array.from({ length: numberOfStars }, (val, idx) => (
+    <i key={idx} className="fa fa-star" />
+  ));
+
+  return <div className="col-5">{stars}</div>;
 };
 
 const Button = props => {
