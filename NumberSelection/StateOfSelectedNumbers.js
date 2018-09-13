@@ -37,12 +37,14 @@ const Answer = props => {
 
 const Numbers = props => {
   const numberClassName = number => {
-    console.log(props.selectedNumbers.includes(number));
     return props.selectedNumbers.includes(number) ? "selected" : "";
   };
-  console.log(Numbers.list);
   const numbers = Numbers.list.map(number => (
-    <span key={number} className={numberClassName(number)}>
+    <span
+      key={number}
+      className={numberClassName(number)}
+      onClick={() => props.selectNumber(number)}
+    >
       {number}
     </span>
   ));
@@ -64,7 +66,15 @@ class Game extends Component {
   // to trigger a rerender, we put data in the state
   state = {
     // typically use objects for faster lookup, but arrays a fine for smaller data sets
-    selectedNumbers: [2, 4]
+    selectedNumbers: []
+  };
+
+  selectNumber = clickedNumber => {
+    console.log("selectNumber func", clickedNumber);
+    // used the function version of setState, b/c the update depends on prevState
+    this.setState(prevState => ({
+      selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
+    }));
   };
 
   render() {
@@ -78,7 +88,10 @@ class Game extends Component {
           <Answer selectedNumbers={this.state.selectedNumbers} />
         </div>
         <br />
-        <Numbers selectedNumbers={this.state.selectedNumbers} />
+        <Numbers
+          selectedNumbers={this.state.selectedNumbers}
+          selectNumber={this.selectNumber}
+        />
       </div>
     );
   }

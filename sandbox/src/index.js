@@ -8,9 +8,10 @@ import "font-awesome/css/font-awesome.min.css";
 
 const Stars = props => {
   // add one so it can actually be between 1 and 9
-  const numberOfStars = 1 + Math.floor(Math.random() * 9);
+  // const numberOfStars = 1 + Math.floor(Math.random() * 9);
   // first arg gives us an undefined array of the len passed in, second populates the array locations based on func output
-  const stars = Array.from({ length: numberOfStars }, (val, idx) => (
+  console.log(props.numberOfStars);
+  const stars = Array.from({ length: props.numberOfStars }, (val, idx) => (
     <i key={idx} className="fa fa-star" />
   ));
 
@@ -37,12 +38,14 @@ const Answer = props => {
 
 const Numbers = props => {
   const numberClassName = number => {
-    console.log(props.selectedNumbers.includes(number));
     return props.selectedNumbers.includes(number) ? "selected" : "";
   };
-  console.log(Numbers.list);
   const numbers = Numbers.list.map(number => (
-    <span key={number} className={numberClassName(number)}>
+    <span
+      key={number}
+      className={numberClassName(number)}
+      onClick={() => props.selectNumber(number)}
+    >
       {number}
     </span>
   ));
@@ -64,7 +67,20 @@ class Game extends Component {
   // to trigger a rerender, we put data in the state
   state = {
     // typically use objects for faster lookup, but arrays a fine for smaller data sets
-    selectedNumbers: [2, 4]
+    selectedNumbers: [],
+    randomNumberOfStars: 1 + Math.floor(Math.random() * 9)
+  };
+
+  /*when we setSTate in selectNumber, the entire Game component gets rerendered including the children.
+  thus are stars are changing for each click
+  to solve, we move the numberOfStars var up to the game component*/
+
+  selectNumber = clickedNumber => {
+    console.log("selectNumber func", clickedNumber);
+    // used the function version of setState, b/c the update depends on prevState
+    this.setState(prevState => ({
+      selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
+    }));
   };
 
   render() {
@@ -73,12 +89,15 @@ class Game extends Component {
         <hr />
         <h3>Play Nine</h3>
         <div className="row">
-          <Stars />
+          <Stars numberOfStars={this.state.randomNumberOfStars} />
           <Button />
           <Answer selectedNumbers={this.state.selectedNumbers} />
         </div>
         <br />
-        <Numbers selectedNumbers={this.state.selectedNumbers} />
+        <Numbers
+          selectedNumbers={this.state.selectedNumbers}
+          selectNumber={this.selectNumber}
+        />
       </div>
     );
   }
