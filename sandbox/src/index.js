@@ -78,6 +78,9 @@ class Game extends Component {
   selectNumber = clickedNumber => {
     console.log("selectNumber func", clickedNumber);
     // used the function version of setState, b/c the update depends on prevState
+    if (this.state.selectedNumbers.includes(clickedNumber)) {
+      return;
+    }
     this.setState(prevState => ({
       selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
     }));
