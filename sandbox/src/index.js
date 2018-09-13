@@ -28,16 +28,24 @@ const Button = props => {
 const Answer = props => {
   return (
     <div className="col-5">
-      {/* hard coded values for now */}
-      <span>4</span>
-      <span>5</span>
+      {props.selectedNumbers.map((number, idx) => (
+        <span key={idx}>{number}</span>
+      ))}
     </div>
   );
 };
 
 const Numbers = props => {
+  const numberClassName = number => {
+    console.log(props.selectedNumbers.includes(number));
+    return props.selectedNumbers.includes(number) ? "selected" : "";
+  };
   console.log(Numbers.list);
-  const numbers = Numbers.list.map(val => <span key={val}>{val}</span>);
+  const numbers = Numbers.list.map(number => (
+    <span key={number} className={numberClassName(number)}>
+      {number}
+    </span>
+  ));
   return (
     <div className="card text-center">
       <div>
@@ -53,6 +61,12 @@ const Numbers = props => {
 Numbers.list = Array.from({ length: 10 }, (val, idx) => idx + 1);
 
 class Game extends Component {
+  // to trigger a rerender, we put data in the state
+  state = {
+    // typically use objects for faster lookup, but arrays a fine for smaller data sets
+    selectedNumbers: [2, 4]
+  };
+
   render() {
     return (
       <div className="container">
@@ -61,10 +75,10 @@ class Game extends Component {
         <div className="row">
           <Stars />
           <Button />
-          <Answer />
+          <Answer selectedNumbers={this.state.selectedNumbers} />
         </div>
         <br />
-        <Numbers />
+        <Numbers selectedNumbers={this.state.selectedNumbers} />
       </div>
     );
   }
