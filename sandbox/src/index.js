@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 // need this import for bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
-// to install just npm install bootstrap
+// to install just npm install font-awesome
 import "font-awesome/css/font-awesome.min.css";
 
 const Stars = props => {
