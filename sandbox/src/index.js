@@ -21,7 +21,12 @@ const Stars = props => {
 const Button = props => {
   return (
     <div className="col-2">
-      <button className="btn btn-primary">=</button>
+      <button
+        disabled={props.selectedNumbers.length === 0}
+        className="btn btn-primary"
+      >
+        =
+      </button>
     </div>
   );
 };
@@ -96,21 +101,23 @@ class Game extends Component {
   };
 
   render() {
+    // destructor state values
+    const { selectedNumbers, randomNumberOfStars } = this.state;
     return (
       <div className="container">
         <hr />
         <h3>Play Nine</h3>
         <div className="row">
-          <Stars numberOfStars={this.state.randomNumberOfStars} />
-          <Button />
+          <Stars numberOfStars={randomNumberOfStars} />
+          <Button selectedNumbers={selectedNumbers} />
           <Answer
-            selectedNumbers={this.state.selectedNumbers}
+            selectedNumbers={selectedNumbers}
             unselectNumber={this.unselectNumber}
           />
         </div>
         <br />
         <Numbers
-          selectedNumbers={this.state.selectedNumbers}
+          selectedNumbers={selectedNumbers}
           selectNumber={this.selectNumber}
         />
       </div>
