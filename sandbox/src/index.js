@@ -30,7 +30,9 @@ const Answer = props => {
   return (
     <div className="col-5">
       {props.selectedNumbers.map((number, idx) => (
-        <span key={idx}>{number}</span>
+        <span key={idx} onClick={() => props.unselectNumber(number)}>
+          {number}
+        </span>
       ))}
     </div>
   );
@@ -76,13 +78,20 @@ class Game extends Component {
   to solve, we move the numberOfStars var up to the game component*/
 
   selectNumber = clickedNumber => {
-    console.log("selectNumber func", clickedNumber);
     // used the function version of setState, b/c the update depends on prevState
     if (this.state.selectedNumbers.includes(clickedNumber)) {
       return;
     }
     this.setState(prevState => ({
       selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
+    }));
+  };
+
+  unselectNumber = clickedNumber => {
+    this.setState(prevState => ({
+      selectedNumbers: prevState.selectedNumbers.filter(
+        num => num !== clickedNumber
+      )
     }));
   };
 
@@ -94,7 +103,10 @@ class Game extends Component {
         <div className="row">
           <Stars numberOfStars={this.state.randomNumberOfStars} />
           <Button />
-          <Answer selectedNumbers={this.state.selectedNumbers} />
+          <Answer
+            selectedNumbers={this.state.selectedNumbers}
+            unselectNumber={this.unselectNumber}
+          />
         </div>
         <br />
         <Numbers
