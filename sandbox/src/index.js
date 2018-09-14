@@ -23,7 +23,7 @@ const Button = props => {
   switch (props.answerIsCorrect) {
     case true:
       button = (
-        <button className="btn btn-success">
+        <button className="btn btn-success" onClick={props.acceptAnswer}>
           <i className="fa fa-check" />
         </button>
       );
@@ -47,7 +47,16 @@ const Button = props => {
       );
       break;
   }
-  return <div className="col-2">{button}</div>;
+  return (
+    <div className="col-2">
+      {button}
+      <br />
+      <br />
+      <button className="btn btn-warning btn-sm">
+        <i className="fa fa-refresh" />
+      </button>
+    </div>
+  );
 };
 
 const Answer = props => {
@@ -64,7 +73,11 @@ const Answer = props => {
 
 const Numbers = props => {
   const numberClassName = number => {
-    return props.selectedNumbers.includes(number) ? "selected" : "";
+    if (props.usedNumbers.includes(number)) {
+      return "used";
+    } else if (props.selectedNumbers.includes(number)) {
+      return "selected";
+    }
   };
   const numbers = Numbers.list.map(number => (
     <span
@@ -95,6 +108,7 @@ class Game extends Component {
     answerIsCorrect: null,
     // typically use objects for faster lookup, but arrays a fine for smaller data sets
     selectedNumbers: [],
+    usedNumbers: [],
     randomNumberOfStars: 1 + Math.floor(Math.random() * 9)
   };
 
@@ -130,11 +144,21 @@ class Game extends Component {
     }));
   };
 
+  acceptAnswer = () => {
+    this.setState(prevState => ({
+      usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
+      selectedNumbers: [],
+      answerIsCorrect: null,
+      randomNumberOfStars: 1 + Math.floor(Math.random() * 9)
+    }));
+  };
+
   render() {
     // destructor state values
     const {
       selectedNumbers,
       randomNumberOfStars,
+      usedNumbers,
       answerIsCorrect
     } = this.state;
     return (
@@ -147,6 +171,7 @@ class Game extends Component {
             answerIsCorrect={answerIsCorrect}
             checkAnswer={this.checkAnswer}
             selectedNumbers={selectedNumbers}
+            acceptAnswer={this.acceptAnswer}
           />
           <Answer
             selectedNumbers={selectedNumbers}
@@ -157,6 +182,7 @@ class Game extends Component {
         <Numbers
           selectedNumbers={selectedNumbers}
           selectNumber={this.selectNumber}
+          usedNumbers={usedNumbers}
         />
       </div>
     );
