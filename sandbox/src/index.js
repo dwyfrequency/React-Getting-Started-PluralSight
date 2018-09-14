@@ -108,12 +108,14 @@ class Game extends Component {
       return;
     }
     this.setState(prevState => ({
+      answerIsCorrect: null,
       selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
     }));
   };
 
   unselectNumber = clickedNumber => {
     this.setState(prevState => ({
+      answerIsCorrect: null,
       selectedNumbers: prevState.selectedNumbers.filter(
         num => num !== clickedNumber
       )
