@@ -19,16 +19,35 @@ const Stars = props => {
 };
 
 const Button = props => {
-  return (
-    <div className="col-2">
-      <button
-        disabled={props.selectedNumbers.length === 0}
-        className="btn btn-primary"
-      >
-        =
-      </button>
-    </div>
-  );
+  let button;
+  switch (props.answerIsCorrect) {
+    case true:
+      button = (
+        <button className="btn btn-success">
+          <i className="fa fa-check" />
+        </button>
+      );
+      break;
+    case false:
+      button = (
+        <button className="btn btn-danger">
+          <i className="fa fa-times" />
+        </button>
+      );
+      break;
+    default:
+      button = (
+        <button
+          className="btn btn-primary"
+          onClick={props.checkAnswer}
+          disabled={props.selectedNumbers.length === 0}
+        >
+          =
+        </button>
+      );
+      break;
+  }
+  return <div className="col-2">{button}</div>;
 };
 
 const Answer = props => {
@@ -73,6 +92,7 @@ Numbers.list = Array.from({ length: 10 }, (val, idx) => idx + 1);
 class Game extends Component {
   // to trigger a rerender, we put data in the state
   state = {
+    answerIsCorrect: null,
     // typically use objects for faster lookup, but arrays a fine for smaller data sets
     selectedNumbers: [],
     randomNumberOfStars: 1 + Math.floor(Math.random() * 9)
@@ -100,16 +120,32 @@ class Game extends Component {
     }));
   };
 
+  checkAnswer = () => {
+    this.setState(prevState => ({
+      answerIsCorrect:
+        prevState.randomNumberOfStars ===
+        prevState.selectedNumbers.reduce((accum, val) => accum + val, 0)
+    }));
+  };
+
   render() {
     // destructor state values
-    const { selectedNumbers, randomNumberOfStars } = this.state;
+    const {
+      selectedNumbers,
+      randomNumberOfStars,
+      answerIsCorrect
+    } = this.state;
     return (
       <div className="container">
         <hr />
         <h3>Play Nine</h3>
         <div className="row">
           <Stars numberOfStars={randomNumberOfStars} />
-          <Button selectedNumbers={selectedNumbers} />
+          <Button
+            answerIsCorrect={answerIsCorrect}
+            checkAnswer={this.checkAnswer}
+            selectedNumbers={selectedNumbers}
+          />
           <Answer
             selectedNumbers={selectedNumbers}
             unselectNumber={this.unselectNumber}
