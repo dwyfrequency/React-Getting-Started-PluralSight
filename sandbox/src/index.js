@@ -52,8 +52,8 @@ const Button = props => {
       {button}
       <br />
       <br />
-      <button className="btn btn-warning btn-sm">
-        <i className="fa fa-refresh" />
+      <button className="btn btn-warning btn-sm" onClick={props.redraw}>
+        <i className="fa fa-refresh" /> {props.redraws}
       </button>
     </div>
   );
@@ -109,7 +109,8 @@ class Game extends Component {
     // typically use objects for faster lookup, but arrays a fine for smaller data sets
     selectedNumbers: [],
     usedNumbers: [],
-    randomNumberOfStars: 1 + Math.floor(Math.random() * 9)
+    randomNumberOfStars: 1 + Math.floor(Math.random() * 9),
+    redraws: 5
   };
 
   /*when we setSTate in selectNumber, the entire Game component gets rerendered including the children.
@@ -153,13 +154,23 @@ class Game extends Component {
     }));
   };
 
+  redraw = () => {
+    this.setState(prevState => ({
+      usedNumbers: [],
+      selectedNumbers: [],
+      answerIsCorrect: null,
+      randomNumberOfStars: 1 + Math.floor(Math.random() * 9)
+    }));
+  };
+
   render() {
     // destructor state values
     const {
       selectedNumbers,
       randomNumberOfStars,
       usedNumbers,
-      answerIsCorrect
+      answerIsCorrect,
+      redraws
     } = this.state;
     return (
       <div className="container">
@@ -172,6 +183,8 @@ class Game extends Component {
             checkAnswer={this.checkAnswer}
             selectedNumbers={selectedNumbers}
             acceptAnswer={this.acceptAnswer}
+            redraw={this.redraw}
+            redraws={redraws}
           />
           <Answer
             selectedNumbers={selectedNumbers}
