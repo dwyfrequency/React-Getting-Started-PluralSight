@@ -7,10 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 
 const Stars = props => {
-  // add one so it can actually be between 1 and 9
-  // const numberOfStars = 1 + Math.floor(Math.random() * 9);
-  // first arg gives us an undefined array of the len passed in, second populates the array locations based on func output
-  console.log(props.numberOfStars);
   const stars = Array.from({ length: props.numberOfStars }, (val, idx) => (
     <i key={idx} className="fa fa-star" />
   ));
@@ -90,12 +86,7 @@ const Numbers = props => {
   ));
   return (
     <div className="card text-center">
-      <div>
-        {numbers}
-        {/* <span>1</span>
-        <span className="selected">2</span>
-        <span className="used">3</span> */}
-      </div>
+      <div>{numbers}</div>
     </div>
   );
 };
