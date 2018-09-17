@@ -48,7 +48,11 @@ const Button = props => {
       {button}
       <br />
       <br />
-      <button className="btn btn-warning btn-sm" onClick={props.redraw}>
+      <button
+        className="btn btn-warning btn-sm"
+        onClick={props.redraw}
+        disabled={props.redraws === 0}
+      >
         <i className="fa fa-refresh" /> {props.redraws}
       </button>
     </div>
@@ -146,12 +150,17 @@ class Game extends Component {
   };
 
   redraw = () => {
-    this.setState(prevState => ({
-      usedNumbers: [],
-      selectedNumbers: [],
-      answerIsCorrect: null,
-      randomNumberOfStars: 1 + Math.floor(Math.random() * 9)
-    }));
+    if (this.state.redraws === 0) {
+      return;
+    } else {
+      this.setState(prevState => ({
+        usedNumbers: [],
+        selectedNumbers: [],
+        answerIsCorrect: null,
+        randomNumberOfStars: 1 + Math.floor(Math.random() * 9),
+        redraws: prevState.redraws - 1
+      }));
+    }
   };
 
   render() {
