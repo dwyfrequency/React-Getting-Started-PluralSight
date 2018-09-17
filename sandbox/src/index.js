@@ -97,6 +97,14 @@ const Numbers = props => {
 // Every function is an object and we can store data on that object to be used by all instances
 Numbers.list = Array.from({ length: 10 }, (val, idx) => idx + 1);
 
+const DoneFrame = props => {
+  return (
+    <div className="text-center">
+      <h2>{props.doneStatus}</h2>
+    </div>
+  );
+};
+
 class Game extends Component {
   // to trigger a rerender, we put data in the state
   state = {
@@ -104,8 +112,13 @@ class Game extends Component {
     // typically use objects for faster lookup, but arrays a fine for smaller data sets
     selectedNumbers: [],
     usedNumbers: [],
-    randomNumberOfStars: 1 + Math.floor(Math.random() * 9),
-    redraws: 5
+    randomNumberOfStars: Game.randomNumber(),
+    redraws: 5,
+    doneStatus: null
+  };
+
+  static randomNumber = () => {
+    return 1 + Math.floor(Math.random() * 9);
   };
 
   /*when we setSTate in selectNumber, the entire Game component gets rerendered including the children.
@@ -145,7 +158,7 @@ class Game extends Component {
       usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
       selectedNumbers: [],
       answerIsCorrect: null,
-      randomNumberOfStars: 1 + Math.floor(Math.random() * 9)
+      randomNumberOfStars: Game.randomNumber()
     }));
   };
 
@@ -157,7 +170,7 @@ class Game extends Component {
         usedNumbers: [],
         selectedNumbers: [],
         answerIsCorrect: null,
-        randomNumberOfStars: 1 + Math.floor(Math.random() * 9),
+        randomNumberOfStars: Game.randomNumber(),
         redraws: prevState.redraws - 1
       }));
     }
@@ -170,7 +183,8 @@ class Game extends Component {
       randomNumberOfStars,
       usedNumbers,
       answerIsCorrect,
-      redraws
+      redraws,
+      doneStatus
     } = this.state;
     return (
       <div className="container">
@@ -192,11 +206,15 @@ class Game extends Component {
           />
         </div>
         <br />
-        <Numbers
-          selectedNumbers={selectedNumbers}
-          selectNumber={this.selectNumber}
-          usedNumbers={usedNumbers}
-        />
+        {doneStatus ? (
+          <DoneFrame doneStatus={doneStatus} />
+        ) : (
+          <Numbers
+            selectedNumbers={selectedNumbers}
+            selectNumber={this.selectNumber}
+            usedNumbers={usedNumbers}
+          />
+        )}
       </div>
     );
   }
