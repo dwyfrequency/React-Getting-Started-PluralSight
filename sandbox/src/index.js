@@ -237,7 +237,8 @@ class Game extends Component {
   };
 
   resetGame = () => {
-    Game.initialState();
+    console.log("inside func reset game");
+    this.setState(Game.initialState());
   };
 
   render() {
