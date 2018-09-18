@@ -181,12 +181,17 @@ class Game extends Component {
   };
 
   acceptAnswer = () => {
-    this.setState(prevState => ({
-      usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
-      selectedNumbers: [],
-      answerIsCorrect: null,
-      randomNumberOfStars: Game.randomNumber()
-    }));
+    /* setState is async, to make sure functions get called after react is done updating the state.
+    We can pass a callback method as a second param for setState */
+    this.setState(
+      prevState => ({
+        usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
+        selectedNumbers: [],
+        answerIsCorrect: null,
+        randomNumberOfStars: Game.randomNumber()
+      }),
+      this.updateDoneStatus
+    );
   };
 
   redraw = () => {
@@ -210,7 +215,7 @@ class Game extends Component {
       { length: 10 },
       (val, idx) => idx + 1
     ).filter(num => !usedNumbers.includes(num));
-
+    console.log(possibleNumbers);
     return possibleCombinationSum(possibleNumbers, randomNumberOfStars);
   };
 
