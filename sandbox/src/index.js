@@ -128,25 +128,32 @@ const DoneFrame = props => {
   return (
     <div className="text-center">
       <h2>{props.doneStatus}</h2>
+      <button className="btn btn-primary" onClick={props.resetGame}>
+        Play Again
+      </button>
     </div>
   );
 };
 
 class Game extends Component {
-  // to trigger a rerender, we put data in the state
-  state = {
-    answerIsCorrect: null,
-    // typically use objects for faster lookup, but arrays a fine for smaller data sets
-    selectedNumbers: [],
-    usedNumbers: [],
-    randomNumberOfStars: Game.randomNumber(),
-    redraws: 5,
-    doneStatus: null
+  static initialState = () => {
+    return {
+      answerIsCorrect: null,
+      // typically use objects for faster lookup, but arrays a fine for smaller data sets
+      selectedNumbers: [],
+      usedNumbers: [],
+      randomNumberOfStars: Game.randomNumber(),
+      redraws: 5,
+      doneStatus: null
+    };
   };
 
   static randomNumber = () => {
     return 1 + Math.floor(Math.random() * 9);
   };
+
+  // to trigger a rerender, we put data in the state
+  state = Game.initialState();
 
   /*when we setSTate in selectNumber, the entire Game component gets rerendered including the children.
   thus are stars are changing for each click
@@ -215,7 +222,6 @@ class Game extends Component {
       { length: 10 },
       (val, idx) => idx + 1
     ).filter(num => !usedNumbers.includes(num));
-    console.log(possibleNumbers);
     return possibleCombinationSum(possibleNumbers, randomNumberOfStars);
   };
 
@@ -228,6 +234,10 @@ class Game extends Component {
         return { doneStatus: "Game Over!" };
       }
     });
+  };
+
+  resetGame = () => {
+    Game.initialState();
   };
 
   render() {
@@ -261,7 +271,7 @@ class Game extends Component {
         </div>
         <br />
         {doneStatus ? (
-          <DoneFrame doneStatus={doneStatus} />
+          <DoneFrame doneStatus={doneStatus} resetGame={this.resetGame} />
         ) : (
           <Numbers
             selectedNumbers={selectedNumbers}
