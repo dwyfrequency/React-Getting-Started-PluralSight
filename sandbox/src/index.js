@@ -236,11 +236,7 @@ class Game extends Component {
     });
   };
 
-  resetGame = () => {
-    console.log("inside func reset game");
-    this.setState(Game.initialState());
-  };
-
+  resetGame = () => this.setState(Game.initialState());
   render() {
     // destructor state values
     const {
