@@ -6,6 +6,33 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // to install just npm install font-awesome
 import "font-awesome/css/font-awesome.min.css";
 
+var possibleCombinationSum = function(arr, n) {
+  if (arr.indexOf(n) >= 0) {
+    return true;
+  }
+  if (arr[0] > n) {
+    return false;
+  }
+  if (arr[arr.length - 1] > n) {
+    arr.pop();
+    return possibleCombinationSum(arr, n);
+  }
+  var listSize = arr.length,
+    combinationsCount = 1 << listSize;
+  for (var i = 1; i < combinationsCount; i++) {
+    var combinationSum = 0;
+    for (var j = 0; j < listSize; j++) {
+      if (i & (1 << j)) {
+        combinationSum += arr[j];
+      }
+    }
+    if (n === combinationSum) {
+      return true;
+    }
+  }
+  return false;
+};
+
 const Stars = props => {
   const stars = Array.from({ length: props.numberOfStars }, (val, idx) => (
     <i key={idx} className="fa fa-star" />
@@ -174,6 +201,28 @@ class Game extends Component {
         redraws: prevState.redraws - 1
       }));
     }
+  };
+
+  // destructing two values in parameters
+  possibleSolutions = ({ randomNumberOfStars, usedNumbers }) => {
+    // possibleNumbers gives an array of numbers that are included in the usedNumbers array
+    const possibleNumbers = Array.from(
+      { length: 10 },
+      (val, idx) => idx + 1
+    ).filter(num => !usedNumbers.includes(num));
+
+    return possibleCombinationSum(possibleNumbers, randomNumberOfStars);
+  };
+
+  updateDoneStatus = () => {
+    this.setState(prevState => {
+      if (prevState.usedNumbers.length === 9) {
+        return { doneStatus: "Done. Nice!" };
+      }
+      if (prevState.redraws === 0 && !this.possibleSolutions(prevState)) {
+        return { doneStatus: "Game Over!" };
+      }
+    });
   };
 
   render() {
